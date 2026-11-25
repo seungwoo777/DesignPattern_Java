@@ -1,29 +1,30 @@
 package com.pattern.structural.composite;
 
+/**
+ * 컴포지트 패턴 데모 - 투자 포트폴리오 트리
+ * 단일 투자 상품과 복합 투자 포트폴리오를 동일한 InvestmentAsset 인터페이스로 다룸
+ */
 public class Client {
+
     public static void main(String[] args) {
-        // 1. 최상위 복합체 생성
-        Composite parent = new Composite();
+        System.out.println("=== 컴포지트 패턴: 투자 포트폴리오 ===\n");
 
-        // 2. 최상위 복합체에 저장할 Leaf와 또 다른 서브 복합체 생성
-        Leaf parentLeaf = new Leaf();
-        Composite child = new Composite();
+        // 최상위 포트폴리오 생성
+        InvestmentPortfolio mainPortfolio = new InvestmentPortfolio("종합 투자 포트폴리오");
 
-        // 3. 최상위 복합체에 객체들을 등록
-        parent.add(parentLeaf);
-        child.add(child);
-        
-        // 4. 서브 복합체에 저장할 Leaf 생성
-        Leaf childLeaf1 = new Leaf();
-        Leaf childLeaf2 = new Leaf();
-        Leaf childLeaf3 = new Leaf();
+        // 하위 포트폴리오 생성: 주식 투자
+        InvestmentPortfolio stockPortfolio = new InvestmentPortfolio("주식 포트폴리오");
+        stockPortfolio.add(new SingleInvestment("삼성전자", 3_000_000));   // 주식 포트폴리오에 개별 주식 투자 추가
+        stockPortfolio.add(new SingleInvestment("SK하이닉스", 5_000_000)); // 주식 포트폴리오에 개별 주식 투자 추가
 
-        // 5. 서브 복합체에 객체들을 등록
-        child.add(childLeaf1);
-        child.add(childLeaf2);
-        child.add(childLeaf3);
+        // 단일 투자 상품: 국채 투자
+        SingleInvestment bondInvestment = new SingleInvestment("국채 투자", 10_000_000);
 
-        // 6. 최상위 복합체에 모든 자식 노드 들을 출력
-        parent.operation();
+        // 최상위 포트폴리오에 하위 포트폴리오와 개별 투자 상품 추가
+        mainPortfolio.add(stockPortfolio);
+        mainPortfolio.add(bondInvestment);
+
+        // 전체 투자 포트폴리오 트리 출력
+        mainPortfolio.showDetail(0);
     }
 }
