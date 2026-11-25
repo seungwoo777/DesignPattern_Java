@@ -1,32 +1,28 @@
 package com.pattern.creational.factorymethod;
 
-import com.pattern.creational.factorymethod.factory.WhiskeyFactory;
-import com.pattern.creational.factorymethod.factory.BlendedFactory;
-import com.pattern.creational.factorymethod.factory.SingleMoltFactory;
-
-import java.math.BigDecimal;
-import java.text.NumberFormat;
+import com.pattern.creational.factorymethod.factory.BondFactory;
+import com.pattern.creational.factorymethod.factory.FinancialProductFactory;
+import com.pattern.creational.factorymethod.factory.StockFactory;
+import com.pattern.creational.factorymethod.product.FinancialProduct;
 
 /**
- * Client
- *   ↓
- * WhiskeyFactory(Creator)
- *   ↓
- * createWhiskey <- Factory Method
- *   ↓
- * Whiskey(Interface)
- *   ↓
- * SingleMaltWhiskey / BlendedWhiskey
+ * 팩토리 메서드 패턴 클라이언트
+ * 각 팩토리를 통해 금융 상품을 생성하고 투자
  */
 public class Client {
+
     public static void main(String[] args) {
-        WhiskeyFactory singleMoltFactory = new SingleMoltFactory();
-        WhiskeyFactory blendedFactory = new BlendedFactory();
+        // 주식 팩토리를 통해 주식 상품 생성
+        FinancialProductFactory stockFactory = new StockFactory();
+        FinancialProduct stock = stockFactory.order("삼성전자 주식", 5000000);
+        stock.invest();
 
-        Whiskey glenfiddich = singleMoltFactory.distillation("Glenfiddich 15", BigDecimal.valueOf(110_000));
-        Whiskey johnnieWalker = blendedFactory.distillation("JohnnieWalker Blue label", BigDecimal.valueOf(330_000));
+        System.out.println();
 
-        System.out.println(glenfiddich.getName() + " / " + glenfiddich.getType() + " / " + glenfiddich.getPrice());
-        System.out.println(johnnieWalker.getName() + " / " + johnnieWalker.getType() + " / " + johnnieWalker.getPrice());
+        // 채권 팩토리를 통해 채권 상품 생성
+        FinancialProductFactory bondFactory = new BondFactory();
+        FinancialProduct bond = bondFactory.order("국채 10년물", 10000000);
+        bond.invest();
     }
+
 }
